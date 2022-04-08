@@ -911,6 +911,8 @@ static int parse_SX130x_configuration(const char * conf_file) {
                 case 125000: ifconf.bandwidth = BW_125KHZ; break;
                 default: ifconf.bandwidth = BW_UNDEFINED;
             }
+            MSG("INFO: Lora standard bw %u\n", bw);
+
             sf = (uint32_t)json_object_dotget_number(conf_obj, "chan_Lora_std.spread_factor");
             switch(sf) {
                 case  5: ifconf.datarate = DR_LORA_SF5;  break;
@@ -923,6 +925,8 @@ static int parse_SX130x_configuration(const char * conf_file) {
                 case 12: ifconf.datarate = DR_LORA_SF12; break;
                 default: ifconf.datarate = DR_UNDEFINED;
             }
+            MSG("INFO: Lora standard sf %u\n", sf);
+
             val = json_object_dotget_value(conf_obj, "chan_Lora_std.implicit_hdr");
             if (json_value_get_type(val) == JSONBoolean) {
                 ifconf.implicit_hdr = (bool)json_value_get_boolean(val);
@@ -944,6 +948,7 @@ static int parse_SX130x_configuration(const char * conf_file) {
                     MSG("ERROR: CRC enable setting is mandatory for implicit header mode\n");
                     return -1;
                 }
+
                 val = json_object_dotget_value(conf_obj, "chan_Lora_std.implicit_coderate");
                 if (json_value_get_type(val) == JSONNumber) {
                     ifconf.implicit_coderate = (uint8_t)json_value_get_number(val);
